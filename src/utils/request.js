@@ -39,7 +39,7 @@ instance.interceptors.response.use(
   (err) => {
     // TODO 5. 处理401错误
     //错误的特殊情况 => 401 权限不足 或 token过期 => 拦截到登录
-    if (err.response.status === 401) {
+    if (err.response?.status === 401) {
       router.push('/login')
     }
     //错误的默认情况
