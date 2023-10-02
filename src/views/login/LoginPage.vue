@@ -44,6 +44,12 @@ const rules = {
     }
   ]
 }
+// 预校验
+const form = ref() // 获取表单组件
+const register = async () => {
+  // 注册前对整个表单进行校验
+  await form.value.validate()
+}
 </script>
 
 <template>
@@ -100,7 +106,12 @@ const rules = {
           ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button auto-insert-space class="button" type="primary">
+          <el-button
+            auto-insert-space
+            class="button"
+            type="primary"
+            @click="register"
+          >
             注册
           </el-button>
         </el-form-item>
