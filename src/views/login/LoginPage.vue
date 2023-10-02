@@ -1,6 +1,7 @@
 <script setup>
 import { User, Lock } from '@element-plus/icons-vue'
 import { ref } from 'vue'
+import { userRegisterService } from '@/api/user'
 
 const isRegister = ref(true) // 切换注册和登录
 // 1.注册
@@ -49,6 +50,10 @@ const form = ref() // 获取表单组件
 const register = async () => {
   // 注册前对整个表单进行校验
   await form.value.validate()
+  await userRegisterService(formModel.value)
+  ElMessage.success('注册成功')
+  //切换到登录
+  isRegister.value = false
 }
 </script>
 
