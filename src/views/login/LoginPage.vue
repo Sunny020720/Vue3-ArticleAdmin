@@ -2,7 +2,7 @@
 import { User, Lock } from '@element-plus/icons-vue'
 import { ref, watch } from 'vue'
 import { userLoginService, userRegisterService } from '@/api/user'
-import { useUserStore } from '@/stores/index'
+import { useUserStore } from '@/stores'
 import router from '@/router'
 
 const isRegister = ref(true) // 切换注册和登录
