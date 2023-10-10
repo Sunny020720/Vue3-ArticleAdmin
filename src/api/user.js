@@ -1,9 +1,14 @@
 import request from '@/utils/request'
-// 注册服务
-export const userRegisterService = ({ username, password, repassword }) => {
+// 注册
+export const userRegisterService = ({ username, password, repassword }) =>
   request.post('/api/reg', {
     username,
     password,
     repassword
   })
-}
+//登录
+export const userLoginService = ({ username, password }) =>
+  request.post('/api/login', {
+    username,
+    password
+  })
