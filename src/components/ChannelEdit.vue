@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import { artAddChannelService, artEditChannelService } from '@/api/article'
 //1.
 const dialogVisible = ref(false) // 表单是否显示
 // 打开弹窗
@@ -38,6 +39,23 @@ const rules = {
     }
   ]
 }
+
+//3.确认提交
+const formRef = ref()
+//通知父组件回显
+const emit = defineEmits(['success'])
+const onSubmit = async () => {
+  await formRef.value.validate()
+  formModel.value.id
+    ? await artEditChannelService(formModel.value)
+    : await artAddChannelService(formModel.value)
+  ElMessage({
+    type: 'success',
+    message: formModel.value.id ? '编辑成功' : '添加成功'
+  })
+  dialogVisible.value = false
+  emit('success')
+}
 </script>
 
 <template>
@@ -47,6 +65,7 @@ const rules = {
     width="30%"
   >
     <el-form
+      ref="formRef"
       :model="formModel"
       :rules="rules"
       label-width="100px"
@@ -69,7 +88,7 @@ const rules = {
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary"> 确认 </el-button>
+        <el-button type="primary" @click="onSubmit"> 确认 </el-button>
       </span>
     </template>
   </el-dialog>
