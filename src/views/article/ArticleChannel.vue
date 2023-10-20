@@ -3,8 +3,9 @@ import PageContainer from '@/components/PageContainer.vue'
 import { artGetChannelsService } from '@/api/article'
 import { ref } from 'vue'
 import { Delete, Edit } from '@element-plus/icons-vue'
+import ChannelEdit from '@/components/ChannelEdit.vue'
 
-//3.loading效果 见1.
+//2.loading效果 见1.
 const loading = ref(false)
 
 //1.获取频道列表
@@ -17,10 +18,22 @@ const getChannelList = async () => {
 }
 getChannelList()
 
-//2.表格操作
-const onEditChannel = (row) => {
-  console.log(row)
+//3.弹窗
+const dialog = ref()
+//添加
+const onAddChannel = () => {
+  dialog.value.open({})
 }
+//编辑
+const onEditChannel = (row) => {
+  dialog.value.open(row)
+}
+//提交后回显
+const onSuccess = () => {
+  getChannelList()
+}
+
+//4.删除
 const onDelChannel = (row) => {
   console.log(row)
 }
@@ -29,7 +42,7 @@ const onDelChannel = (row) => {
 <template>
   <page-container title="文章分类">
     <template #extra>
-      <el-button type="primary"> 添加分类 </el-button>
+      <el-button type="primary" @click="onAddChannel"> 添加分类 </el-button>
     </template>
     <el-table v-loading="loading" :data="channelList" style="width: 100%">
       <el-table-column label="序号" type="index" width="100"> </el-table-column>
@@ -57,5 +70,7 @@ const onDelChannel = (row) => {
         <el-empty description="没有数据" />
       </template>
     </el-table>
+    <!--    弹窗-->
+    <channel-edit ref="dialog" @success="onSuccess"></channel-edit>
   </page-container>
 </template>
