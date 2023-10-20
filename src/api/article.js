@@ -3,3 +3,11 @@ import request from '@/utils/request'
 export const artGetChannelsService = () => {
   return request.get('/my/cate/list')
 }
+//2.添加分类
+export const artAddChannelService = (data) => {
+  return request.post('/my/cate/add', data)
+}
+//3.编辑分类
+export const artEditChannelService = (data) => {
+  return request.put('/my/cate/info', data)
+}
