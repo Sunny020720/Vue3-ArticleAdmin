@@ -2,6 +2,7 @@
 import PageContainer from '@/components/PageContainer.vue'
 import { ref } from 'vue'
 import { Delete, Edit } from '@element-plus/icons-vue'
+import ChannelSelect from '@/components/ChannelSelect.vue'
 //假数据
 const articleList = ref([
   {
@@ -27,6 +28,14 @@ const onEditArticle = (row) => {
 const onDeleteArticle = (row) => {
   console.log(`删除${row.id}`)
 }
+
+//1.子组件-channelSelect
+const selectParams = ref({
+  state: '',
+  cate_id: 66047,
+  pagenum: 1,
+  pagesize: 5
+})
 </script>
 
 <template>
@@ -36,14 +45,15 @@ const onDeleteArticle = (row) => {
     </template>
     <!--    表单区域-->
     <el-form inline>
-      <el-form-item label="文章分类: ">
-        <el-select>
-          <el-option label="新闻" value="111"></el-option>
-          <el-option label="体育" value="222"></el-option>
-        </el-select>
-      </el-form-item>
+      <!--  文章分类选择组件-->
+      <!--
+          Vue2 => :value  @input
+          Vue3 => :modelValue  @update:modelValue
+      -->
+      <channel-select v-model="selectParams.cate_id"></channel-select>
+
       <el-form-item label="发布状态: ">
-        <el-select>
+        <el-select v-model="selectParams.state">
           <el-option label="已发布" value="已发布"></el-option>
           <el-option label="草稿" value="草稿"></el-option>
         </el-select>
