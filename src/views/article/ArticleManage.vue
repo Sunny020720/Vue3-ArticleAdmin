@@ -6,6 +6,9 @@ import ChannelSelect from '@/components/ChannelSelect.vue'
 import { artGetListService } from '@/api/article'
 import { formatTime } from '@/utils/format'
 
+//3.loading
+const loading = ref(false)
+
 //1.文章
 //文章列表
 const articleList = ref([])
@@ -19,9 +22,11 @@ const params = ref({
 })
 //获取文章列表-基于params参数
 const getArticleList = async () => {
+  loading.value = true
   const res = await artGetListService(params.value)
   articleList.value = res.data.data
   total.value = res.data.total
+  loading.value = false
 }
 getArticleList()
 //编辑逻辑
@@ -72,7 +77,7 @@ const onCurrentChange = (page) => {
       </el-form-item>
     </el-form>
     <!--    表格-->
-    <el-table :data="articleList">
+    <el-table v-loading="loading" :data="articleList">
       <el-table-column label="文章标题" prop="title">
         <template #default="{ row }">
           <el-link :underline="false" type="primary">{{ row.title }}</el-link>
