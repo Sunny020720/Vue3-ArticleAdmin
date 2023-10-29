@@ -6,6 +6,7 @@ import ChannelSelect from '@/components/ChannelSelect.vue'
 import { artGetListService } from '@/api/article'
 import { formatTime } from '@/utils/format'
 
+//1.文章
 //文章列表
 const articleList = ref([])
 const total = ref(0) //总条数
@@ -30,6 +31,18 @@ const onEditArticle = (row) => {
 //删除逻辑
 const onDeleteArticle = (row) => {
   console.log(`删除${row.id}`)
+}
+//2.分页逻辑
+const onSizeChange = (size) => {
+  //每页条数修改
+  params.value.pagenum = 1
+  params.value.pagesize = size
+  getArticleList()
+}
+const onCurrentChange = (page) => {
+  //当前页修改
+  params.value.pagenum = page
+  getArticleList()
 }
 </script>
 
@@ -97,5 +110,17 @@ const onDeleteArticle = (row) => {
         <el-empty description="没有数据" />
       </template>
     </el-table>
+    <!--    分页-->
+    <el-pagination
+      v-model:current-page="params.pagenum"
+      v-model:page-size="params.pagesize"
+      :page-sizes="[3, 5, 10]"
+      :total="total"
+      background
+      layout="jumper, total, sizes, prev, pager, next"
+      style="margin-top: 20px; justify-content: flex-start"
+      @size-change="onSizeChange"
+      @current-change="onCurrentChange"
+    />
   </page-container>
 </template>
