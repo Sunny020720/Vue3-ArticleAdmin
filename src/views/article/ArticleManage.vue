@@ -3,23 +3,26 @@ import PageContainer from '@/components/PageContainer.vue'
 import { ref } from 'vue'
 import { Delete, Edit } from '@element-plus/icons-vue'
 import ChannelSelect from '@/components/ChannelSelect.vue'
-//假数据
-const articleList = ref([
-  {
-    id: 5961,
-    title: '新的文章啊',
-    pub_date: '2022-07-10 14:53:52.604',
-    state: '已发布',
-    cate_name: '体育'
-  },
-  {
-    id: 5962,
-    title: '新的文章啊',
-    pub_date: '2022-07-10 14:54:30.904',
-    state: '草稿',
-    cate_name: '体育'
-  }
-])
+import { artGetListService } from '@/api/article'
+import { formatTime } from '@/utils/format'
+
+//文章列表
+const articleList = ref([])
+const total = ref(0) //总条数
+//请求参数对象
+const params = ref({
+  state: '',
+  cate_id: '',
+  pagenum: 1,
+  pagesize: 5
+})
+//获取文章列表-基于params参数
+const getArticleList = async () => {
+  const res = await artGetListService(params.value)
+  articleList.value = res.data.data
+  total.value = res.data.total
+}
+getArticleList()
 //编辑逻辑
 const onEditArticle = (row) => {
   console.log(`编辑${row.id}`)
@@ -28,14 +31,6 @@ const onEditArticle = (row) => {
 const onDeleteArticle = (row) => {
   console.log(`删除${row.id}`)
 }
-
-//1.子组件-channelSelect
-const selectParams = ref({
-  state: '',
-  cate_id: 66047,
-  pagenum: 1,
-  pagesize: 5
-})
 </script>
 
 <template>
@@ -50,10 +45,10 @@ const selectParams = ref({
           Vue2 => :value  @input
           Vue3 => :modelValue  @update:modelValue
       -->
-      <channel-select v-model="selectParams.cate_id"></channel-select>
+      <channel-select v-model="params.cate_id"></channel-select>
 
       <el-form-item label="发布状态: ">
-        <el-select v-model="selectParams.state">
+        <el-select v-model="params.state">
           <el-option label="已发布" value="已发布"></el-option>
           <el-option label="草稿" value="草稿"></el-option>
         </el-select>
@@ -71,7 +66,11 @@ const selectParams = ref({
         </template>
       </el-table-column>
       <el-table-column label="分类" prop="cate_name"></el-table-column>
-      <el-table-column label="发表时间" prop="pub_date"></el-table-column>
+      <el-table-column label="发表时间" prop="pub_date">
+        <template #default="{ row }">
+          {{ formatTime(row.pub_date) }}
+        </template>
+      </el-table-column>
       <el-table-column label="状态" prop="state"></el-table-column>
       <el-table-column label="操作">
         <!--  利用作用域插槽row 可以获取当前行的数据 => v-for 遍历 item -->
