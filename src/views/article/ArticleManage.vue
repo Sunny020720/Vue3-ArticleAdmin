@@ -5,6 +5,7 @@ import { Delete, Edit } from '@element-plus/icons-vue'
 import ChannelSelect from '@/components/ChannelSelect.vue'
 import { artGetListService } from '@/api/article'
 import { formatTime } from '@/utils/format'
+import ArticleEdit from '@/components/ArticleEdit.vue'
 
 //3.loading
 const loading = ref(false)
@@ -29,9 +30,14 @@ const getArticleList = async () => {
   loading.value = false
 }
 getArticleList()
+//添加逻辑
+const articleEditRef = ref() //抽屉组件
+const onAddArticle = () => {
+  articleEditRef.value.open({})
+}
 //编辑逻辑
 const onEditArticle = (row) => {
-  console.log(`编辑${row.id}`)
+  articleEditRef.value.open(row)
 }
 //删除逻辑
 const onDeleteArticle = (row) => {
@@ -49,12 +55,24 @@ const onCurrentChange = (page) => {
   params.value.pagenum = page
   getArticleList()
 }
+
+//4.搜索和重置
+const onSearch = () => {
+  params.value.pagenum = 1
+  getArticleList()
+}
+const onReset = () => {
+  params.value.pagenum = 1
+  params.value.cate_id = ''
+  params.value.state = ''
+  getArticleList()
+}
 </script>
 
 <template>
   <page-container title="文章管理">
     <template #extra>
-      <el-button type="primary"> 发布文章 </el-button>
+      <el-button type="primary" @click="onAddArticle"> 发布文章 </el-button>
     </template>
     <!--    表单区域-->
     <el-form inline>
@@ -72,8 +90,8 @@ const onCurrentChange = (page) => {
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary">搜索</el-button>
-        <el-button>重置</el-button>
+        <el-button type="primary" @click="onSearch">搜索</el-button>
+        <el-button @click="onReset">重置</el-button>
       </el-form-item>
     </el-form>
     <!--    表格-->
@@ -127,5 +145,7 @@ const onCurrentChange = (page) => {
       @size-change="onSizeChange"
       @current-change="onCurrentChange"
     />
+    <!--    抽屉-->
+    <article-edit ref="articleEditRef"></article-edit>
   </page-container>
 </template>
