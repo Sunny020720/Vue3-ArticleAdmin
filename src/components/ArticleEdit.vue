@@ -2,6 +2,8 @@
 import { ref } from 'vue'
 import ChannelSelect from '@/components/ChannelSelect.vue'
 import { Plus } from '@element-plus/icons-vue'
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css'
 
 // 控制抽屉显示
 const visibleDrawer = ref(false)
@@ -55,7 +57,7 @@ defineExpose({
     <!--  发布文章表单  -->
     <el-form :model="formModel" label-width="100px">
       <el-form-item label="文章标题" prop="title">
-        <el-input placeholder="请输入标题"></el-input>
+        <el-input v-model="formModel.title" placeholder="请输入标题"></el-input>
       </el-form-item>
       <el-form-item label="文章分类" prop="cate_id">
         <channel-select
@@ -74,7 +76,16 @@ defineExpose({
           <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
         </el-upload>
       </el-form-item>
-      <el-form-item label="文章内容" prop="content">富文本编辑器</el-form-item>
+      <el-form-item label="文章内容" prop="content">
+        <div class="editor">
+          <quill-editor
+            theme="snow"
+            v-model:content="formModel.content"
+            content-type="html"
+          >
+          </quill-editor>
+        </div>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary">发布</el-button>
         <el-button type="info">草稿</el-button>
@@ -109,6 +120,12 @@ defineExpose({
       height: 178px;
       text-align: center;
     }
+  }
+}
+.editor {
+  width: 100%;
+  :deep(.ql-editor) {
+    min-height: 300px;
   }
 }
 </style>
