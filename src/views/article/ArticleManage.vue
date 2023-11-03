@@ -43,6 +43,7 @@ const onEditArticle = (row) => {
 const onDeleteArticle = (row) => {
   console.log(`删除${row.id}`)
 }
+
 //2.分页逻辑
 const onSizeChange = (size) => {
   //每页条数修改
@@ -81,8 +82,9 @@ const onReset = () => {
           Vue2 => :value  @input
           Vue3 => :modelValue  @update:modelValue
       -->
-      <channel-select v-model="params.cate_id"></channel-select>
-
+      <el-form-item label="文章分类: ">
+        <channel-select v-model="params.cate_id"></channel-select>
+      </el-form-item>
       <el-form-item label="发布状态: ">
         <el-select v-model="params.state">
           <el-option label="已发布" value="已发布"></el-option>
