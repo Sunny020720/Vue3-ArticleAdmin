@@ -30,3 +30,11 @@ export const artGetListService = (params) => {
 export const artPublishService = (data) => {
   return request.post('/my/article/add', data)
 }
+// 3.获取文章详情
+export const artGetDetailService = (id) => {
+  return request.get('my/article/info', {
+    params: {
+      id
+    }
+  })
+}

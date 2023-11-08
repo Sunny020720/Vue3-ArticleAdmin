@@ -4,7 +4,9 @@ import ChannelSelect from '@/components/ChannelSelect.vue'
 import { Plus } from '@element-plus/icons-vue'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
-import { artPublishService } from '@/api/article'
+import { artGetDetailService, artPublishService } from '@/api/article'
+import { baseURL } from '@/utils/request'
+import axios from 'axios'
 
 // 控制抽屉显示
 const visibleDrawer = ref(false)
@@ -54,6 +56,15 @@ const open = async (row) => {
   visibleDrawer.value = true
   if (row.id) {
     console.log('编辑')
+    const res = await artGetDetailService(row.id)
+    formModel.value = res.data.data
+    //   图片回显
+    imgUrl.value = baseURL + formModel.value.cover_img
+    // 提交时,后台需要数据格式是file => 需要将网络图片转成file格式
+    formModel.value.cover_img = await imageUrlToFile(
+      imgUrl.value,
+      formModel.value.cover_img
+    )
   } else {
     // 成功添加后重置表单的数据
     // => 富文本编辑器 需要手动重置
@@ -66,6 +77,26 @@ const open = async (row) => {
 defineExpose({
   open
 })
+
+// 将网络图片地址转换为File对象
+async function imageUrlToFile(url, fileName) {
+  try {
+    // 第一步：使用axios获取网络图片数据
+    const response = await axios.get(url, { responseType: 'arraybuffer' })
+    const imageData = response.data
+
+    // 第二步：将图片数据转换为Blob对象
+    const blob = new Blob([imageData], {
+      type: response.headers['content-type']
+    })
+
+    // 第三步：创建一个新的File对象
+    return new File([blob], fileName, { type: blob.type })
+  } catch (error) {
+    console.error('将图片转换为File对象时发生错误:', error)
+    throw error
+  }
+}
 </script>
 
 <template>
