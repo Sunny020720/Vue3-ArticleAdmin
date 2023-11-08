@@ -30,16 +30,26 @@ const getArticleList = async () => {
   loading.value = false
 }
 getArticleList()
-//添加逻辑
+// 抽屉组件
+// 添加逻辑
 const articleEditRef = ref() //抽屉组件
 const onAddArticle = () => {
   articleEditRef.value.open({})
 }
-//编辑逻辑
+// 编辑逻辑
 const onEditArticle = (row) => {
   articleEditRef.value.open(row)
 }
-//删除逻辑
+// 添加&编辑 成功的回调
+const onSuccess = (type) => {
+  if (type === 'add') {
+    //   如果添加，渲染最后一页
+    const lastPage = Math.ceil((total.value + 1) / params.value.pagesize)
+    params.value.pagenum = lastPage
+  }
+  getArticleList()
+}
+// 删除逻辑
 const onDeleteArticle = (row) => {
   console.log(`删除${row.id}`)
 }
@@ -148,6 +158,6 @@ const onReset = () => {
       @current-change="onCurrentChange"
     />
     <!--    抽屉-->
-    <article-edit ref="articleEditRef"></article-edit>
+    <article-edit ref="articleEditRef" @success="onSuccess"></article-edit>
   </page-container>
 </template>
