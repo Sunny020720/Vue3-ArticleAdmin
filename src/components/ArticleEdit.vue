@@ -4,6 +4,7 @@ import ChannelSelect from '@/components/ChannelSelect.vue'
 import { Plus } from '@element-plus/icons-vue'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
+import { artPublishService } from '@/api/article'
 
 // 控制抽屉显示
 const visibleDrawer = ref(false)
@@ -16,24 +17,7 @@ const defaultFrom = {
   state: ''
 }
 // 表单数据
-const formModel = ref({
-  ...defaultFrom
-})
-
-// 打开组件
-// open({}) => 添加：表单无需渲染
-// open({ id, ...}) => 编辑：表单需要渲染
-const open = (row) => {
-  visibleDrawer.value = true
-  if (row.id) {
-    console.log('编辑')
-  } else {
-    formModel.value = {
-      ...defaultFrom
-    }
-    console.log('添加')
-  }
-}
+const formModel = ref({ ...defaultFrom })
 
 //1.上传封面
 const imgUrl = ref('') //预览图
@@ -41,7 +25,44 @@ const onUploadFile = (uploadFile) => {
   imgUrl.value = URL.createObjectURL(uploadFile.raw) //预览图片
   formModel.value.cover_img = uploadFile.raw
 }
+// 2.提交文章
+const emit = defineEmits(['success']) // 提交成功回显
+const onPublish = async (state) => {
+  // 将已发布还是草稿状态，存入 state
+  formModel.value.state = state
+  //转换成 formData
+  const fd = new FormData()
+  for (let key in formModel.value) {
+    fd.append(key, formModel.value[key])
+  }
+  // 编辑或者添加
+  if (formModel.value.id) {
+    console.log('编辑')
+  } else {
+    await artPublishService(fd)
+    ElMessage.success('添加成功')
+    visibleDrawer.value = false
+    emit('success', 'add')
+  }
+}
 
+// 打开组件
+// open({}) => 添加：表单无需渲染
+// open({ id, ...}) => 编辑：表单需要渲染
+const editorRef = ref()
+const open = async (row) => {
+  visibleDrawer.value = true
+  if (row.id) {
+    console.log('编辑')
+  } else {
+    // 成功添加后重置表单的数据
+    // => 富文本编辑器 需要手动重置
+    formModel.value = { ...defaultFrom }
+    imgUrl.value = ''
+    editorRef.value.setHTML('')
+    console.log('添加')
+  }
+}
 defineExpose({
   open
 })
@@ -79,6 +100,7 @@ defineExpose({
       <el-form-item label="文章内容" prop="content">
         <div class="editor">
           <quill-editor
+            ref="editorRef"
             theme="snow"
             v-model:content="formModel.content"
             content-type="html"
@@ -87,8 +109,8 @@ defineExpose({
         </div>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary">发布</el-button>
-        <el-button type="info">草稿</el-button>
+        <el-button @click="onPublish('已发布')" type="primary">发布</el-button>
+        <el-button @click="onPublish('草稿')" type="info">草稿</el-button>
       </el-form-item>
     </el-form>
   </el-drawer>
