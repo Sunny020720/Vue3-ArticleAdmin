@@ -4,7 +4,11 @@ import ChannelSelect from '@/components/ChannelSelect.vue'
 import { Plus } from '@element-plus/icons-vue'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
-import { artGetDetailService, artPublishService } from '@/api/article'
+import {
+  artEditService,
+  artGetDetailService,
+  artPublishService
+} from '@/api/article'
 import { baseURL } from '@/utils/request'
 import axios from 'axios'
 
@@ -39,7 +43,10 @@ const onPublish = async (state) => {
   }
   // 编辑或者添加
   if (formModel.value.id) {
-    console.log('编辑')
+    await artEditService(fd)
+    ElMessage.success('编辑成功')
+    visibleDrawer.value = false
+    emit('success', 'edit')
   } else {
     await artPublishService(fd)
     ElMessage.success('添加成功')
