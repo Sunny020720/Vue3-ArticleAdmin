@@ -38,3 +38,7 @@ export const artGetDetailService = (id) => {
     }
   })
 }
+// 4.编辑文章
+export const artEditService = (data) => {
+  return request.put('my/article/info', data)
+}
