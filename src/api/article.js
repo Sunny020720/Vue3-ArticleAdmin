@@ -25,3 +25,8 @@ export const artGetListService = (params) => {
     params
   })
 }
+// 2.添加文章
+// => data是一个formData格式的对象
+export const artPublishService = (data) => {
+  return request.post('/my/article/add', data)
+}
