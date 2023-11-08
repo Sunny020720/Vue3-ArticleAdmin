@@ -47,6 +47,7 @@ const onSuccess = (type) => {
     const lastPage = Math.ceil((total.value + 1) / params.value.pagesize)
     params.value.pagenum = lastPage
   }
+  // 如果编辑 直接回显
   getArticleList()
 }
 // 删除逻辑
