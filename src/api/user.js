@@ -18,3 +18,9 @@ export const userGetInfoService = () => request.get('/my/userinfo')
 export const userUpdateInfoService = ({ id, nickname, email }) => {
   return request.put('/my/userinfo', { id, nickname, email })
 }
+// 5.更换头像
+export const userUploadAvatarService = (avatar) => {
+  return request.patch('/my/update/avatar', {
+    avatar
+  })
+}
