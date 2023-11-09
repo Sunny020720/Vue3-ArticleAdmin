@@ -24,3 +24,7 @@ export const userUploadAvatarService = (avatar) => {
     avatar
   })
 }
+// 6.更新密码
+export const userUpdatePassService = ({ old_pwd, new_pwd, re_pwd }) => {
+  return request.patch('/my/updatepwd', { old_pwd, new_pwd, re_pwd })
+}
