@@ -4,6 +4,7 @@ import { artDelChannelService, artGetChannelsService } from '@/api/article'
 import { ref } from 'vue'
 import { Delete, Edit } from '@element-plus/icons-vue'
 import ChannelEdit from '@/components/ChannelEdit.vue'
+import axios from 'axios'
 
 //2.loading效果 见1.
 const loading = ref(false)
@@ -22,6 +23,10 @@ getChannelList()
 const dialog = ref()
 //添加
 const onAddChannel = () => {
+  // test
+  axios.get('http://localhost:3000/users').then((res) => {
+    console.log(res.data)
+  })
   dialog.value.open({})
 }
 //编辑

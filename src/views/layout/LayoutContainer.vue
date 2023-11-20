@@ -121,7 +121,8 @@ const onCommand = async (command) => {
     background-color: #ad2525;
     &__logo {
       height: 120px;
-      background: url('@/assets/logo.png') no-repeat center / 120px auto;
+      background: url('@/assets/logo_rabbit_s.png') no-repeat center / 160px
+        auto;
     }
     .el-menu {
       border-right: none;
