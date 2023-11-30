@@ -73,7 +73,6 @@ const userStore = useUserStore()
 const login = async () => {
   await form.value.validate()
   const res = await userLoginService(formModel.value)
-  // console.log('登陆成功', res)
   userStore.setToken(res.data.token)
   ElMessage.success('登录成功')
   await router.push('/')

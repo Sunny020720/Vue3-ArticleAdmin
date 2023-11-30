@@ -3,7 +3,7 @@ import PageContainer from '@/components/PageContainer.vue'
 import { ref } from 'vue'
 import router from '@/router'
 import { useUserStore } from '@/stores'
-import { userLoginService, userUpdatePassService } from '@/api/user'
+import { userUpdatePassService } from '@/api/user'
 
 const formRef = ref()
 const pwdForm = ref({
@@ -13,13 +13,13 @@ const pwdForm = ref({
   username: '',
   password: ''
 })
-// 检查原密码是否正确
-const checkOldPass = async () => {
-  pwdForm.value.username = useUserStore().user.username
-  pwdForm.value.password = pwdForm.value.old_pwd
-  // 利用登录校验
-  await userLoginService(pwdForm.value)
-}
+// // 检查原密码是否正确
+// const checkOldPass = async () => {
+//   pwdForm.value.username = useUserStore().user.username
+//   pwdForm.value.password = pwdForm.value.old_pwd
+//   // 利用登录校验
+//   await userLoginService(pwdForm.value)
+// }
 // 检查新旧密码是否相同
 const checkOldSame = (rule, value, cb) => {
   if (value === pwdForm.value.old_pwd) {
@@ -70,7 +70,7 @@ const rules = {
 
 // 提交新密码
 const onSubmit = async () => {
-  await checkOldPass() // 校验原密码
+  // await checkOldPass() // 校验原密码
   await formRef.value.validate() // 校验
   await userUpdatePassService(pwdForm.value)
   ElMessage({ type: 'success', message: '更换密码成功' })

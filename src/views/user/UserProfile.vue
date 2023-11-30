@@ -6,10 +6,10 @@ import { userUpdateInfoService } from '@/api/user'
 
 //用户信息
 const {
-  user: { username, nickname, email, id },
+  user: { username, nickname, email, _id },
   getUser
 } = useUserStore()
-const userInfo = ref({ username, nickname, email, id })
+const userInfo = ref({ username, nickname, email, _id })
 // 校验规则
 const rules = {
   nickname: [
