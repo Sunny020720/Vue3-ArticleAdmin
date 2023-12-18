@@ -40,7 +40,7 @@ const onDelChannel = async (row) => {
     confirmButtonText: '确认',
     cancelButtonText: '取消'
   })
-  await artDelChannelService(row.id)
+  await artDelChannelService(row._id)
   ElMessage({ type: 'success', message: '删除成功' })
   getChannelList()
 }

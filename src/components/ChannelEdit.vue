@@ -46,12 +46,12 @@ const formRef = ref()
 const emit = defineEmits(['success'])
 const onSubmit = async () => {
   await formRef.value.validate()
-  formModel.value.id
+  formModel.value._id
     ? await artEditChannelService(formModel.value)
     : await artAddChannelService(formModel.value)
   ElMessage({
     type: 'success',
-    message: formModel.value.id ? '编辑成功' : '添加成功'
+    message: formModel.value._id ? '编辑成功' : '添加成功'
   })
   dialogVisible.value = false
   emit('success')
@@ -61,7 +61,7 @@ const onSubmit = async () => {
 <template>
   <el-dialog
     v-model="dialogVisible"
-    :title="formModel.id ? '编辑分类' : '添加分类'"
+    :title="formModel._id ? '编辑分类' : '添加分类'"
     width="30%"
   >
     <el-form

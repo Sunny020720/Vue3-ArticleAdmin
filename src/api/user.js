@@ -18,12 +18,14 @@ export const userUpdateInfoService = ({ _id, nickname, email }) => {
   return request.put('/users/userinfo', { _id, nickname, email })
 }
 // 5.更换头像
-export const userUploadAvatarService = (avatar) => {
-  return request.patch('/my/update/avatar', {
-    avatar
+export const userUploadAvatarService = (params) => {
+  return request.post('/users/update_avatar', params, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
   })
 }
 // 6.更新密码
 export const userUpdatePassService = ({ old_pwd, new_pwd, re_pwd }) => {
-  return request.patch('/users/updatepwd', { old_pwd, new_pwd, re_pwd })
+  return request.patch('/users/update_pwd', { old_pwd, new_pwd, re_pwd })
 }

@@ -8,20 +8,29 @@ import { userUploadAvatarService } from '@/api/user'
 const uploadRef = ref()
 // 渲染的图片
 const imgUrl = ref(useUserStore().user.user_pic)
+// 提交的图片文件
+let imgFile = {}
 // 选择图片
 const onUploadFile = (file) => {
   // 预览图片
-  // => 基于FileReader读取图片做预览，便于提交
-  const reader = new FileReader()
-  reader.readAsDataURL(file.raw)
-  reader.onload = () => {
-    imgUrl.value = reader.result
-  }
-  console.log(imgUrl)
+  // // => 基于FileReader读取图片做预览，便于提交 (base64)
+  // const reader = new FileReader()
+  // reader.readAsDataURL(file.raw)
+  // reader.onload = () => {
+  //   imgUrl.value = reader.result
+  // }
+  imgUrl.value = URL.createObjectURL(file.raw)
+  imgFile = { file: file.raw, test: '123' }
 }
 // 上传头像
 const onUpdateAvatar = async () => {
-  await userUploadAvatarService(imgUrl.value)
+  // console.log(imgFile.value)
+  const params = new FormData()
+  for (let i in imgFile) {
+    params.append(i, imgFile[i])
+  }
+  console.log(params)
+  await userUploadAvatarService(params)
   // 回调显示
   await useUserStore().getUser()
   ElMessage({ type: 'success', message: '更换头像成功' })

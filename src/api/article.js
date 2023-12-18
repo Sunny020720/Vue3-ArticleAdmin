@@ -10,12 +10,13 @@ export const artAddChannelService = (data) => {
 }
 //3.编辑分类
 export const artEditChannelService = (data) => {
+  console.log('data:', data)
   return request.put('/my/cate/info', data)
 }
 //4.删除分类
-export const artDelChannelService = (id) => {
+export const artDelChannelService = (_id) => {
   return request.delete('/my/cate/del', {
-    params: { id }
+    params: { _id }
   })
 }
 //文章
