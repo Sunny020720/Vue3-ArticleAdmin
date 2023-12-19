@@ -27,9 +27,9 @@ const emit = defineEmits(['update:modelValue'])
   >
     <el-option
       v-for="channel in channelList"
-      :key="channel.id"
+      :key="channel._id"
       :label="channel.cate_name"
-      :value="channel.id"
+      :value="channel._id"
     ></el-option>
   </el-select>
 </template>

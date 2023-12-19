@@ -42,7 +42,7 @@ const onPublish = async (state) => {
     fd.append(key, formModel.value[key])
   }
   // 编辑或者添加
-  if (formModel.value.id) {
+  if (formModel.value._id) {
     await artEditService(fd)
     ElMessage.success('编辑成功')
     visibleDrawer.value = false
@@ -61,9 +61,9 @@ const onPublish = async (state) => {
 const editorRef = ref()
 const open = async (row) => {
   visibleDrawer.value = true
-  if (row.id) {
+  if (row._id) {
     console.log('编辑')
-    const res = await artGetDetailService(row.id)
+    const res = await artGetDetailService(row._id)
     formModel.value = res.data.data
     //   图片回显
     imgUrl.value = baseURL + formModel.value.cover_img
@@ -109,7 +109,7 @@ async function imageUrlToFile(url, fileName) {
 <template>
   <el-drawer
     v-model="visibleDrawer"
-    :title="formModel.id ? '编辑文章' : '添加文章'"
+    :title="formModel._id ? '编辑文章' : '添加文章'"
     direction="rtl"
     size="70%"
   >
