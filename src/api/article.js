@@ -29,6 +29,7 @@ export const artGetListService = (params) => {
 // 2.添加文章
 // => data是一个formData格式的对象
 export const artPublishService = (data) => {
+  console.log('data: ', data)
   return request.post('/my/article/add', data)
 }
 // 3.获取文章详情
@@ -44,10 +45,10 @@ export const artEditService = (data) => {
   return request.put('my/article/info', data)
 }
 // 5.删除文章
-export const artDelService = (id) => {
-  return request.delete('my/article/info', {
+export const artDelService = (_id) => {
+  return request.delete('/my/article/info', {
     params: {
-      id
+      _id
     }
   })
 }

@@ -57,7 +57,7 @@ const onDeleteArticle = async (row) => {
     confirmButtonText: '确认',
     cancelButtonText: '取消'
   })
-  await artDelService(row.id)
+  await artDelService(row._id)
   ElMessage({
     type: 'success',
     message: '删除成功'
